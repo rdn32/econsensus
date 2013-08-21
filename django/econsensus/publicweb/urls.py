@@ -6,7 +6,8 @@ from views import DecisionCreate, DecisionUpdate, \
                     DecisionDetail, DecisionList, \
                     ExportCSV, FeedbackCreate, \
                     FeedbackSnippetCreate, FeedbackUpdate, \
-                    OrganizationRedirectView, YourDetails
+                    OrganizationRedirectView, YourDetails, \
+                    DecisionSearchView
 
 from models import Feedback
 
@@ -71,6 +72,11 @@ urlpatterns = patterns('econsensus.publicweb.views',
     url(r'^(?P<org_slug>[-\w]+)/item/list/(?P<status>[a-z]+)/$',
         DecisionList.as_view(template_name='decision_list.html'),
         name='publicweb_item_list'),
+
+    url(r'^search/$',
+        DecisionSearchView.make(),
+        name='decision_search'),
+
     url(r'^$', 
         OrganizationRedirectView.as_view(),
         name='publicweb_root'),
