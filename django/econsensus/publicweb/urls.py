@@ -75,7 +75,7 @@ urlpatterns = patterns('econsensus.publicweb.views',
 
     url(r'^search/$',
         DecisionSearchView.make(),
-        name='decision_search'),
+        name='publicweb_decision_search'),
 
     url(r'^$', 
         OrganizationRedirectView.as_view(),
