@@ -144,14 +144,17 @@ INSTALLED_APPS = (
     'tinymce',
     'south',
     'tagging',
-    'haystack'
+    'haystack',
+    'custom_haystack'
 )
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        'ENGINE': 'custom_haystack.backends.disabled_backend.DisabledEngine',
+        # To enable search, configure haystack to use a real engine
+        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        # 'URL': 'http://127.0.0.1:9200/',
+        # 'INDEX_NAME': 'haystack',
     },
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
