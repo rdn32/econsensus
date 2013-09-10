@@ -530,7 +530,7 @@ class EconsensusActionitemUpdateView(ActionItemUpdateView):
     form_class = EconsensusActionItemUpdateForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required_or_403('edit_decisions_feedback', (Organization, 'decision', 'pk')))
+    @method_decorator(permission_required_or_403('edit_decisions_feedback', (Organization, 'decision', 'decisionpk')))
     def dispatch(self, *args, **kwargs):        
         return super(EconsensusActionitemUpdateView, self).dispatch(*args, **kwargs)
 
