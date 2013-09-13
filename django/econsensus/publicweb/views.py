@@ -23,6 +23,7 @@ import unicodecsv
 from guardian.decorators import permission_required_or_403
 from notification import models as notification
 from organizations.models import Organization
+from haystack.views import SearchView, search_view_factory
 
 from publicweb.forms import DecisionForm, FeedbackForm, YourDetailsForm,\
     EconsensusActionItemCreateForm, EconsensusActionItemUpdateForm
@@ -732,3 +733,18 @@ class OrganizationRedirectView(RedirectView):
             return reverse('publicweb_item_list', args = [users_org.slug, 'discussion'])
         except:
             return reverse('organization_list')
+
+class DecisionSearchView(SearchView):
+    def __init__(self, *args, **kwargs):
+        super(DecisionSearchView, self).__init__(*args, **kwargs)
+
+    def get_results(self):
+        results = super(DecisionSearchView, self).get_results()
+        orgs = Organization.objects.filter(users=self.request.user)
+        return results.filter(organization__in=orgs)
+
+    # Might have been logical to call this method "as_view", but
+    # that might imply that we inherit from View...
+    @classmethod
+    def make(cls):
+        return login_required(search_view_factory(view_class=cls))

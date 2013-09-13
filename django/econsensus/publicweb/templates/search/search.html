@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load search_enabled %}
+
+{% block topbar %}
+<div id="navigation-wrapper">
+    <div id="navigation">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+    <div class="search">
+        {% include "search/form.html" %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block main_content %}
+{% if page.object_list %}
+    <table class="search-results summary-list">
+        <thead>
+            <tr class="summary-header">
+                <th class="id">{% trans "ID" %}</th>
+                <th class="excerpt">{% trans "Excerpt" %}</th>
+                <th class="status">{% trans "Status" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for result in page.object_list %}
+            {% with object=result.object status=result.object.status %}
+            <tr>
+                <td class="id {{ status }}">
+                    <a href="{{ object.get_absolute_url }}"><span class="iconified">{{ object.id }}</span></a>
+                </td>
+                <td class="excerpt {{ status }}">{{ object.excerpt }}</td>
+                <td class="status {{ status }}">{{ status|capfirst }}</td>
+            </tr>
+            {% endwith %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if page.has_previous or page.has_next %}
+        <div>
+            {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+            |
+            {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    {% trans "No results" %}
+{% endif %}
+
+{% endblock main_content %}
